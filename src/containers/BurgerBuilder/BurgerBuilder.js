@@ -1,7 +1,9 @@
 import React, {Component} from "react";
-import Auxi from "../../hoc/Auxi";
+import Auxi from "../../hoc/Auxi/Auxi";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -18,7 +20,8 @@ class BurgerBuilder extends Component {
       cheese: 0,
       meat: 0,
     },
-    totalPrice: 4
+    totalPrice: 4,
+    isOpen: false
   }
 
   ingredientHandler = (type, operation) => {
@@ -45,6 +48,14 @@ class BurgerBuilder extends Component {
     })
   }
 
+  openHandler = (isOpen) => {
+    this.setState({isOpen: !isOpen})
+  }
+
+  purchaseHandler = () => {
+    alert('you purchased a burger')
+  }
+
   render() {
     const disabledInfo = {
       ...this.state.ingredients
@@ -55,11 +66,24 @@ class BurgerBuilder extends Component {
 
     return(
       <Auxi>
+        {/*Re-rendering of the modal and order summary component can
+        be avoided by conditional rendering of modal component but
+        that won't allow the slide-up/down animation of modal so
+        shouldComponentUpdate is used inside of modal instead*/}
+        <Modal show={this.state.isOpen} clicked={() => this.openHandler(this.state.isOpen)}>
+          <OrderSummary
+            details={this.state}
+            cancel={() => this.openHandler(this.state.isOpen)}
+            continue={this.purchaseHandler}
+          />
+        </Modal>
+
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           price={this.state.totalPrice}
           operation={this.ingredientHandler}
           isDisabled={disabledInfo}
+          openHandler={() => this.openHandler(this.state.isOpen)}
         />
       </Auxi>
     )

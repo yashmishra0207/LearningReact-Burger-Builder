@@ -2,6 +2,7 @@ import React from "react";
 import BuildControl from "./BuildControl/BuildControl";
 import classes from "./BuildControls.module.css";
 
+
 const controls = [
   { label: 'Salad', type: 'salad'},
   { label: 'Bacon', type: 'bacon'},
@@ -24,6 +25,7 @@ const buildControls = (props) => (
     )}
     <button
       className={classes.OrderButton}
+      onClick={props.openHandler}
       disabled={(Object.values(props.isDisabled).reduce((finalValue, ele) => (finalValue && ele), true))}
     >
       ORDER NOW

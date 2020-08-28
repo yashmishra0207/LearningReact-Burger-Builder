@@ -18,3 +18,10 @@
         left: calc(50% - 250px);
     }
 }
+
+@media (max-width: 400px) {
+    .Modal {
+        width: 100%;
+        left:0;
+    }
+}
